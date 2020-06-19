@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title> Registration Page </title>
+{% endblock %}
+
+{% block body %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            {{ message }}
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+{% endblock %}
