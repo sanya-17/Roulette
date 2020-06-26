@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title> Home page </title>
+{% endblock %}
+
+{% block body %}
+<a href="{{url_for('logout')}}"> logout </a>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+{{ message }}
+{% endfor %}
+{% endif %}
+{% endwith %}
+{% endblock %}
