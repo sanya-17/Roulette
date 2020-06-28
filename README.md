@@ -1,3 +1,3 @@
 # Roulette
 
-An app for the indecisive, after registering for an account, users can create decisions from which a choice is picked at random
+An app for the indecisive; after registering for an account, users can create decisions from which a choice is picked at random. Building with Python, Flask, SQLAlchemy backend and Bootstrap4 front end
