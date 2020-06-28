@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from roulette.models import User
+from roulette.models import User, List, Item
+from flask_login import current_user
 
 
 class RegistrationForm(FlaskForm):
@@ -33,3 +34,21 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Log in')
+
+
+class ListForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    submit = SubmitField('Save')
+    # TODO: consider case sensitivity
+
+    def validate_name(self, name):
+        name = List.query.filter_by(
+            user_id=current_user.id, title=name.data).first()
+        if name:
+            raise ValidationError('A list with this name already exists')
+
+
+class ItemForm(FlaskForm):
+    item_list = StringField(
+        'Items', validators=[DataRequired()])
+    submit = SubmitField('Enter')

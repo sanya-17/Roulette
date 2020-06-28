@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title> View List </title>
+<link rel="stylesheet" href="{{ url_for('static', filename='list_styles.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<div>
+    <ul id='items'>
+        {% for item in list.items %}
+        <li><button type="button" class="btn btn-primary">{{item.title}}</button></li>
+        {% endfor %}
+    </ul>
+</div>
+<div class="content-section">
+    <form method="POST" action="">
+        {{form.hidden_tag()}}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Enter items as a comma separated list</legend>
+            <!--TODO: print errors with form, i.e. invalid username etc -->
+            <div class="form-group">
+                {{form.item_list.label(class="form-control-label")}}
+                {% if form.item_list.errors %}
+                {{ form.item_list(class="form-control form-control-lg is-invalid")}}
+                <div class="invalid-feedback">
+                    {% for error in form.item_list.errors %}
+                    <span>{{error}}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{form.item_list(class="form-control form-control-lg")}}
+                {% endif %}
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{form.submit(class="btn btn-outline-info")}}
+        </div>
+        <small class="text-muted ml-2">
+            <a href="{{url_for('home')}}">Cancel</a>
+        </small>
+    </form>
+</div>
+{% endblock %}

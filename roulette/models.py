@@ -17,6 +17,8 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
 
+# TODO: Make necessary columns unique
+
 
 class List(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -25,7 +27,7 @@ class List(db.Model):
     items = db.relationship('Item', backref='list', lazy=True)
 
     def __repr__(self):
-        return f"User('{self.title}', '{str(self.user_id)}')"
+        return f"List('{self.title}', '{str(self.user_id)}')"
 
 
 class Item(db.Model):
@@ -34,4 +36,4 @@ class Item(db.Model):
     list_id = db.Column(db.Integer, db.ForeignKey('list.id'), nullable=False)
 
     def __repr__(self):
-        return f"User('{self.title}', '{str(self.list_id)}')"
+        return f"Item('{self.title}', '{str(self.list_id)}')"
