@@ -50,5 +50,5 @@ class ListForm(FlaskForm):
 
 class ItemForm(FlaskForm):
     item_list = StringField(
-        'Items', validators=[DataRequired()])
+        'Items', validators=[DataRequired()], default='Enter items as a comma separated list')
     submit = SubmitField('Enter')

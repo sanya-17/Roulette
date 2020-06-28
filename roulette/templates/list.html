@@ -6,19 +6,22 @@
 {% endblock %}
 
 {% block body %}
-
+<h1> Items in {{list.title}}</h1>
+<button type="button" class="btn btn-danger m-1" data-toggle="modal" data-target="#deleteModal">Delete
+    List</button>
 <div>
     <ul id='items'>
         {% for item in list.items %}
-        <li><button type="button" class="btn btn-primary">{{item.title}}</button></li>
+        <li><button type="button" class="btn btn-primary m-1">{{item.title}}</button></li>
         {% endfor %}
     </ul>
 </div>
+<!--content-section is not a bootstrap class-->
 <div class="content-section">
     <form method="POST" action="">
         {{form.hidden_tag()}}
         <fieldset class="form-group">
-            <legend class="border-bottom mb-4">Enter items as a comma separated list</legend>
+            <legend class="border-bottom mb-4"></legend>
             <!--TODO: print errors with form, i.e. invalid username etc -->
             <div class="form-group">
                 {{form.item_list.label(class="form-control-label")}}
@@ -38,8 +41,33 @@
             {{form.submit(class="btn btn-outline-info")}}
         </div>
         <small class="text-muted ml-2">
-            <a href="{{url_for('home')}}">Cancel</a>
+            <a href="{{url_for('home')}}">Return to homepage</a>
         </small>
     </form>
+</div>
+
+<form action="{{url_for('list', list_id=list.id )}}" method='POST'>
+    <button type="submit" class=" btn btn-primary mt-3 mb-3" name='roulette_btn' value='roulette'>
+        Roulette</button>
+</form>
+<span id='roulette'> {{roulette}} </span>
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Post?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="{{url_for('delete_list', list_id=list.id)}}"><button type="button"
+                        class="btn btn-danger m-1">Delete</button></a>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

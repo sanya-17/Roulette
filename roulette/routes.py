@@ -1,11 +1,17 @@
 from flask import url_for, redirect, render_template, flash, request
+import random
 from roulette import app, db, bcrypt
 from roulette.forms import RegistrationForm, LoginForm, ListForm, ItemForm
 from roulette.models import User, List, Item
 from flask_login import login_user, current_user, login_required, logout_user
 
+# TODO: add a popupwindow for deleteing an item from the list
+# TODO: implement route for edititng an account
+# demo@testing.com, pass
 
 # landing page and account registration
+
+
 @app.route("/", methods=['POST', 'GET'])
 def register():
     if current_user.is_authenticated:
@@ -24,6 +30,8 @@ def register():
 
     # render template on GET request
     return render_template('register.html', form=form)
+
+# login page
 
 
 @app.route("/login", methods=['POST', 'GET'])
@@ -51,6 +59,8 @@ def login():
 def home():
     lists = current_user.lists
     return render_template('user_home.html', lists=lists)
+
+# handles logging out
 
 
 @app.route("/logout")
@@ -82,30 +92,47 @@ def new_list():
     return render_template('create_list.html', form=form)
 
 
+# route for interacting with the list and performing CRUD operations
 @app.route("/list/<int:list_id>", methods=['POST', 'GET'])
 @login_required
 def list(list_id):
+    roulette = ""
     form = ItemForm()
     current_list = List.query.filter_by(
         user_id=current_user.id,  id=list_id).first_or_404()
+    # handles roulette button press
+    if request.method == 'POST':
+        if request.form.get('roulette_btn'):
+            roulette = random.choice(current_list.items).title
+            return render_template('list.html', list=current_list, form=form, roulette=roulette)
+
+    # handles item entry
     if form.validate_on_submit():
-        print('Validated')
+        # split user entry
         item_list = form.item_list.data.split(',')
-        print(item_list)
+        # add item to db after verifying that the item does not already exist
         for item in item_list:
             test = Item.query.filter_by(
                 title=item.strip(), list_id=current_list.id).first()
             if not test:
-                print('adding to database')
                 item_db = Item(title=item.strip(), list_id=current_list.id)
                 db.session.add(item_db)
                 db.session.commit()
-        for item in current_list.items:
-            print(item.title)
-    # get items, add to database
-    # render list.html template
-    return render_template('list.html', list=current_list, form=form)
+    return render_template('list.html', list=current_list, form=form, roulette=roulette)
 
-    # TODO: add a popupwindow for deleteing an item from the list
-    # TODO: add button for deleting the list
-    # TODO: implement route for edititng an account
+
+# route for deleting a list
+@app.route("/delete/<int:list_id>", methods=['POST', 'GET'])
+@login_required
+def delete_list(list_id):
+    current_list = List.query.get(list_id)
+    title = current_list.title
+    # delete items in list
+    for item in current_list.items:
+        db.session.delete(item)
+        db.session.commit()
+    # delete list
+    db.session.delete(current_list)
+    db.session.commit()
+    flash(f"Deleted {title} List", 'success')
+    return redirect(url_for('home'))
