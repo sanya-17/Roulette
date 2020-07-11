@@ -5,7 +5,7 @@ from roulette.forms import RegistrationForm, LoginForm, ListForm, ItemForm
 from roulette.models import User, List, Item
 from flask_login import login_user, current_user, login_required, logout_user
 
-# TODO: add a popupwindow for deleteing an item from the list
+# TODO: Display a tooltip that says "click to delete" when a user hovers over an item
 # TODO: implement route for edititng an account
 # demo@testing.com, pass
 
@@ -93,6 +93,7 @@ def new_list():
 
 
 # route for interacting with the list and performing CRUD operations
+# TODO: Require that item.length() > 0, no empty items
 @app.route("/list/<int:list_id>", methods=['POST', 'GET'])
 @login_required
 def list(list_id):
@@ -122,7 +123,7 @@ def list(list_id):
 
 
 # route for deleting a list
-@app.route("/delete/<int:list_id>", methods=['POST', 'GET'])
+@app.route("/delete/<int:list_id>", methods=['POST'])
 @login_required
 def delete_list(list_id):
     current_list = List.query.get(list_id)
@@ -136,3 +137,17 @@ def delete_list(list_id):
     db.session.commit()
     flash(f"Deleted {title} List", 'success')
     return redirect(url_for('home'))
+
+
+# route for deleting an item
+@app.route("/delete/<int:list_id>/<int:item_id>", methods=['POST'])
+@login_required
+def delete_item(list_id, item_id):
+    current_item = Item.query.get(item_id)
+    title = current_item.title
+    #delete item
+    db.session.delete(current_item)
+    db.session.commit()
+
+    flash(f"Deleted {title}", 'success')
+    return redirect(url_for('list', list_id=list_id))    
