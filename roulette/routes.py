@@ -5,13 +5,8 @@ from roulette.forms import RegistrationForm, LoginForm, ListForm, ItemForm
 from roulette.models import User, List, Item
 from flask_login import login_user, current_user, login_required, logout_user
 
-# TODO: Display a tooltip that says "click to delete" when a user hovers over an item
-# TODO: implement route for edititng an account
-# demo@testing.com, pass
 
 # landing page and account registration
-
-
 @app.route("/", methods=['POST', 'GET'])
 def register():
     if current_user.is_authenticated:
@@ -25,15 +20,14 @@ def register():
                     email=form.email.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        flash('Your account has been created', 'success')  # dummy message
+        flash('Your account has been created', 'success')  
         return redirect(url_for('login'))
 
     # render template on GET request
     return render_template('register.html', form=form)
 
+
 # login page
-
-
 @app.route("/login", methods=['POST', 'GET'])
 def login():
     if current_user.is_authenticated:
@@ -52,33 +46,29 @@ def login():
             flash('Login unsuccessful. Please check username and password', 'danger')
     return render_template('login.html', form=form)
 
+
 # user home page
-
-
 @app.route("/home")
 def home():
     lists = current_user.lists
     return render_template('user_home.html', lists=lists)
 
+
 # handles logging out
-
-
 @app.route("/logout")
 def logout():
     logout_user()
     return redirect(url_for('register'))
 
+
 # account page, users can reset password and change username
-
-
 @app.route("/account")
 @login_required
 def account():
     return render_template('account.html')
 
+
 # route for creating a new list
-
-
 @app.route("/list/new", methods=['POST', 'GET'])
 @login_required
 def new_list():
@@ -93,7 +83,6 @@ def new_list():
 
 
 # route for interacting with the list and performing CRUD operations
-# TODO: Require that item.length() > 0, no empty items
 @app.route("/list/<int:list_id>", methods=['POST', 'GET'])
 @login_required
 def list(list_id):

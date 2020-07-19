@@ -5,32 +5,30 @@
 {% endblock %}
 
 {% block body %}
-<div class="content-section">
-    <form method="POST" action="">
-        {{form.hidden_tag()}}
-        <fieldset class="form-group">
-            <legend class="border-bottom mb-4">Create List</legend>
-            <!--TODO: print errors with form, i.e. invalid username etc -->
-            <div class="form-group">
-                {{form.name.label(class="form-control-label")}}
-                {% if form.name.errors %}
-                {{ form.name(class="form-control form-control-lg is-invalid")}}
-                <div class="invalid-feedback">
-                    {% for error in form.name.errors %}
-                    <span>{{error}}</span>
-                    {% endfor %}
-                </div>
-                {% else %}
-                {{form.name(class="form-control form-control-lg")}}
-                {% endif %}
-            </div>
-        </fieldset>
+<!--form for entering name of new list-->
+<form method="POST" action="">
+    {{form.hidden_tag()}}
+    <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Create List</legend>
         <div class="form-group">
-            {{form.submit(class="btn btn-outline-info")}}
+            {{form.name.label(class="form-control-label")}}
+            {% if form.name.errors %}
+            {{ form.name(class="form-control form-control-lg is-invalid")}}
+            <div class="invalid-feedback">
+                {% for error in form.name.errors %}
+                <span>{{error}}</span>
+                {% endfor %}
+            </div>
+            {% else %}
+            {{form.name(class="form-control form-control-lg")}}
+            {% endif %}
         </div>
-        <small class="text-muted ml-2">
-            <a href="{{url_for('home')}}">Cancel</a>
-        </small>
-    </form>
-</div>
+    </fieldset>
+    <div class="form-group">
+        {{form.submit(class="btn btn-outline-info")}}
+    </div>
+    <small class="text-muted ml-2">
+        <a href="{{url_for('home')}}">Cancel</a>
+    </small>
+</form>
 {% endblock %}

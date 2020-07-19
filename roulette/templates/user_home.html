@@ -3,12 +3,13 @@
 {% block head %}
 <title> Home page </title>
 {% endblock %}
-
+<!-- heading-->
 {% block body %}
 <h1 class = "display-4 text-center"> My Lists</h1>
 <a class = "lead text-dark" href="{{url_for('new_list')}}">Create New List</a>
 <hr>
-<br> 
+<br>
+<!--display lists--> 
 {% for list in lists %}
     <p class = "lead"><a class = 'text-dark' href="{{url_for('list',list_id=list.id)}}">{{list.title}}</a></p>
 {% endfor %}

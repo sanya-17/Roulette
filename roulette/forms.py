@@ -6,8 +6,6 @@ from flask_login import current_user
 
 
 class RegistrationForm(FlaskForm):
-    # DataRequired requires that the username field not be empty
-    # first parameter in stringfield is label
     username = StringField('Username', validators=[
                            DataRequired(), Length(min=2, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -38,8 +36,7 @@ class LoginForm(FlaskForm):
 
 class ListForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
-    submit = SubmitField('Save')
-    # TODO: consider case sensitivity
+    submit = SubmitField('Save')  
 
     def validate_name(self, name):
         name = List.query.filter_by(

@@ -25,41 +25,41 @@
         {% endfor %}
     </ul>
 </div>
-<!--content-section is not a bootstrap class-->
-<div class="content-section">
-    <form method="POST" action="">
-        {{form.hidden_tag()}}
-        <fieldset class="form-group">
-            <legend class="border-bottom mb-4"></legend>
-            <div class="form-group">          
-                {% if form.item_list.errors %}
-                {{ form.item_list(class="form-control form-control-lg is-invalid")}}
-                <div class="invalid-feedback">
-                    {% for error in form.item_list.errors %}
-                    <span>{{error}}</span>
-                    {% endfor %}
-                </div>
-                {% else %}
-                {{form.item_list(class="form-control form-control-lg")}}
-                {% endif %}
-            </div>
-        </fieldset>
-        <div class="form-group d-inline">
-            {{form.submit(class="btn btn-outline-info")}}
-        </div>
-        <small class="text-muted ml-2 d-inline">
-            <a href="{{url_for('home')}}">Return to homepage</a>
-        </small>
-    </form>
-</div>
 
-<div class = "text-center">
+<!--form for entering list items-->
+<form method="POST" action="">
+    {{form.hidden_tag()}}
+    <fieldset class="form-group">
+        <legend class="border-bottom mb-4"></legend>
+        <div class="form-group">          
+            {% if form.item_list.errors %}
+            {{ form.item_list(class="form-control form-control-lg is-invalid")}}
+            <div class="invalid-feedback">
+                {% for error in form.item_list.errors %}
+                <span>{{error}}</span>
+                {% endfor %}
+            </div>
+            {% else %}
+            {{form.item_list(class="form-control form-control-lg")}}
+            {% endif %}
+        </div>
+    </fieldset>
+    <div class="form-group d-inline">
+        {{form.submit(class="btn btn-outline-info")}}
+    </div>
+    <small class="text-muted ml-2 d-inline">
+        <a href="{{url_for('home')}}">Return to homepage</a>
+    </small>
+</form>
+
+<!--roulette button-->
+<div class = "text-center mb-5">
     <form action="{{url_for('list', list_id=list.id )}}" method='POST'>
         <button type="submit" class=" btn btn-primary mt-3 mb-3 " name='roulette_btn' value='roulette'>
             Roulette</button>
     </form>
     <br>
-    <span id='roulette text-center'> {{roulette}} </span>
+    <span id='roulette'> {{roulette}} </span>
 </div>
 
 <!-- Modal -->
